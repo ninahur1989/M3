@@ -8,14 +8,12 @@ using Newtonsoft.Json;
 
 namespace M3
 {
-
     public class Logger
     {
-        private Logs _log = new Logs();
+        private const int _cycle = 51;
         private readonly object _lock = new object();
-        private const int _cycle = 21;
+        private Action _delegateToBackup = () => { Console.WriteLine("you need make a backup of your logs"); };
         private event Action Backup;
-        private Action delegateToBackup = () => { Console.WriteLine("you need make a backup of your logs"); };
         public int N { get; set; }
         public string Path { get; set; }
 
@@ -26,57 +24,42 @@ namespace M3
             Path = json.Path;
         }
 
-        public async void FileWriterAsync()
+        public async Task FileWriterAsync()
         {
-
             Logs logs = new Logs();
-            Task a = null ;
             for (int i = 1; i < _cycle; i++)
             {
-                //File.AppendAllText(@"C:\\Users\Admin\source\repos\M3\M3\MainLogs.txt", _log.LogGenerator());
-                //File.AppendAllText(@"C:\\Users\Admin\source\repos\M3\M3\MainLogs.txt", " \n");
-                //if (i % N == 0)
-                //{
-                //    await Task.Run(() =>
-                //    {
-                //        Backup.Invoke();
-                //        BackUpWriter();
-                //    });
-                //}
                 logs.Currentlog.Add(logs.LogGenerator());
 
                 if (i % N == 0)
                 {
-                    if (a != null)
+                    lock (_lock)
                     {
-                        Task.WaitAll(a);
+                        for (int d = i - N; d < i; d++)
+                        {
+                            File.AppendAllText(Path + "\\MainLogs.txt", logs.Currentlog[d] + "\n");
+                        }
                     }
 
-                    a = new Task(() =>
+                    await Task.Run(() =>
                     {
-                        
                         Backup.Invoke();
-                        BackUpWriter();
+                        BackUpWriter(logs.Currentlog);
                     });
-
-                    File.WriteAllLines(@"C:\\Users\Admin\source\repos\M3\M3\MainLogs.txt", logs.Currentlog);
-                    a.Start();
-                    Console.WriteLine(a.Status);
-                    await a;
                 }
             }
         }
 
-        public void BackUpWriter()
+        public void BackUpWriter(List<string> logs)
         {
             string currentpath = Path + "Backuplogs\\";
-            File.Copy(Path + "MainLogs.txt", currentpath + DateTime.UtcNow.ToFileTime() + ".txt");
+            File.WriteAllLines(currentpath + DateTime.UtcNow.ToFileTime() + ".txt", logs);
         }
 
         public void Config()
         {
             GetJson();
-            Backup = delegateToBackup;
+            Backup = _delegateToBackup;
         }
     }
 }

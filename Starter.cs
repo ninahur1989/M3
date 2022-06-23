@@ -9,9 +9,9 @@ namespace M3
     public class Starter
     {
         private Logger _logger = new Logger();
-        private event Action WriterEvent;
+        private event Func<Task> WriterEvent;
 
-        public async Task Start()
+        public void Start()
         {
             Logger logger = new Logger();
             logger.Config();

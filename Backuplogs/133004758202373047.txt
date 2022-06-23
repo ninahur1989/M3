@@ -1,5 +1,0 @@
-Resource log 1822
-Server log 4550
-Availability log  1085
-Availability log  4955
-Availability log  9631
