@@ -1,0 +1,15 @@
+Event log  2224
+Event log  3469
+Event log  6307
+Change log 8921
+Event log  806
+Resource log 2555
+Event log  8754
+System log  4238
+Resource log 7736
+System log  770
+Server log 4857
+Server log 915
+Availability log  8295
+Event log  8656
+Server log 4772

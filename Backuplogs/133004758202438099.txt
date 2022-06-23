@@ -1,0 +1,10 @@
+Resource log 1822
+Server log 4550
+Availability log  1085
+Availability log  4955
+Availability log  9631
+Server log 8410
+Change log 4570
+Change log 6371
+Event log  2763
+Server log 3014
