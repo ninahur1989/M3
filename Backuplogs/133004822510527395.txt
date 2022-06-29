@@ -1,0 +1,10 @@
+Resource log 8523
+System log  5627
+Event log  8263
+System log  2075
+Event log  3899
+Server log 1952
+Change log 356
+Change log 9161
+System log  7153
+Resource log 7258
